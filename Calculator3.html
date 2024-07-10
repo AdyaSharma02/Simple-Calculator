@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Simple Calculator</title>
+    <style type="text/css">
+    body {
+    font-family: 'Arial', sans-serif;
+    background: linear-gradient(to right, #84fab0, #8fd3f4);
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+#calculator {
+    background: linear-gradient(to right, #ffffff, #e0e0e0);
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    text-align: right;
+    width: 300px;
+}
+
+#buttons {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-gap: 10px;
+    margin-top: 15px;
+}
+
+.button {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    text-align: center;
+    cursor: pointer;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background: linear-gradient(to right, #f5f5f5, #ffd54f);
+    transition: background 0.3s ease;
+}
+
+.button:hover {
+    background: linear-gradient(to right, #e0e0e0, #ffca28); 
+}
+
+#lbl {
+    display: block;
+    font-size: 24px;
+    margin-bottom: 10px;
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 5px;
+    color: #333; 
+}
+
+
+    </style>
+</head>
+<body>
+    <div id="calculator">
+        <label id='lbl'></label>
+        <div id="buttons">
+            <input type="button" value="9" class="button" onclick="getdigit(this)">
+            <input type="button" value="8" class="button" onclick="getdigit(this)">
+            <input type="button" value="7" class="button" onclick="getdigit(this)">
+            <input type="button" value="=" class="button" onclick="getresult()">
+            <input type="button" value="AC" class="button" onclick="clearall()">
+            <input type="button" value="6" class="button" onclick="getdigit(this)">
+            <input type="button" value="5" class="button" onclick="getdigit(this)">
+            <input type="button" value="4" class="button" onclick="getdigit(this)">
+            <input type="button" value="+" class="button" onclick="getoperator(this)">
+            <input type="button" value="3" class="button" onclick="getdigit(this)">
+            <input type="button" value="2" class="button" onclick="getdigit(this)">
+            <input type="button" value="1" class="button" onclick="getdigit(this)">
+            <input type="button" value="-" class="button" onclick="getoperator(this)">
+            <input type="button" value="." class="button" onclick="decimal(this)">
+            <input type="button" value="0" class="button" onclick="getdigit(this)">
+            <input type="button" value="/" class="button" onclick="getoperator(this)">
+            <input type="button" value="*" class="button" onclick="getoperator(this)">
+        </div>
+    </div>
+    <script language='javascript'>
+        lblScreen = document.getElementById("lbl");            
+    prev=0;
+    op="";
+    isOperatorClicked=false;                                
+    isdecimalused=true;
+    continuecal=false;
+    count=0;   
+    prevop="";
+    function clearall()
+    {
+        lblScreen.innerHTML="";
+        prev=0;
+        op="";
+        isOperatorClicked=false;                                
+        isdecimalused=true;
+        count=0;
+        prevop="";
+    }                           
+    function getdigit(btn)
+    {
+        if(isOperatorClicked && !continuecal)
+        {
+            prev=parseFloat(lblScreen.innerHTML);
+            lblScreen.innerHTML="";
+            isOperatorClicked=false;
+        }
+        if(isOperatorClicked && continuecal)
+        {
+            if(prevop=="+")
+            {
+                prev = prev + parseFloat(lblScreen.innerHTML);
+            }
+            if(prevop=="-")
+            {
+                prev = prev - parseFloat(lblScreen.innerHTML);
+            }
+            if(prevop=="*")
+            {
+                prev = prev * parseFloat(lblScreen.innerHTML);
+            }
+            if(prevop=="/")
+            {
+                prev = prev / parseFloat(lblScreen.innerHTML);
+            }
+            lblScreen.innerHTML="";
+            isOperatorClicked=false;
+            continuecal=false;
+        }
+        lblScreen.innerHTML += btn.value;
+    }
+    function getoperator(btn)
+    {
+        isOperatorClicked=true;
+        count++;
+        if(count>1)
+        {
+            prevop=op;
+            continuecal=true;
+        }
+        op=btn.value;
+        isdecimalused=true;
+    }
+    function decimal(btn)
+    {
+        if(isdecimalused)
+        {
+            lblScreen.innerHTML +=btn.value;
+        }
+        isdecimalused=false;
+    }  
+    function getresult()
+    {
+        if(isdecimalused==false)
+        {
+            next=parseFloat(lblScreen.innerHTML);
+        }
+        else
+        {
+            next=parseInt(lblScreen.innerHTML);
+        }
+        if(op=="+")
+        {
+            lblScreen.innerHTML = (prev + next)+"";
+        }
+        if(op=="-")
+        {
+            lblScreen.innerHTML = (prev - next)+"";
+        }
+        if(op=="*")
+        {
+            lblScreen.innerHTML = (prev * next)+"";
+        }
+        if(op=="/")
+        {
+            lblScreen.innerHTML = (prev / next)+"";
+        }
+        prev="";
+        next="";
+        count=0;
+    }
+    </script>
+</body>
+</html>
